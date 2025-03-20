@@ -2,8 +2,17 @@ from products import Product
 from store import Store
 from promotions import PercentageDisscount, SecondhalfPrice, BuyTwoGetOneFree
 
+# Step 1: Define the LimitedProduct Class
+class LimitedProduct(Product):
+    def __init__(self, name, price, quantity, shipping_restriction):
+        # Inherit from the Product class
+        super().__init__(name, price, quantity)
+        self.shipping_restriction = shipping_restriction
 
-
+    def show(self):
+        # Show product details including the shipping restriction
+        product_details = super().show()
+        return f"{product_details} | Shipping: {self.shipping_restriction}"
 
 def list_products(store):
     """List all products in the store."""
@@ -11,12 +20,10 @@ def list_products(store):
     for product in store.get_all_products():
         print(product.show())
 
-
 def show_total_quantity(store):
     """Show the total quantity of items in the store."""
     total_amount = store.get_total_quantity()
     print(f"\nTotal amount in store: {total_amount} items")
-
 
 def make_order(store):
     """Process an order for a selected product and quantity."""
@@ -39,7 +46,6 @@ def make_order(store):
     except (ValueError, IndexError):
         print("Invalid input. Please enter a valid product number and quantity.")
 
-
 def main():
     """Main function to handle user interactions."""
     actions = {
@@ -48,11 +54,12 @@ def main():
         "3": make_order
     }
 
-    # Setup initial stock of inventory
+    # Step 2: Setup initial stock of inventory, including LimitedProduct
     product_list = [
         Product("MacBook Air M2", price=1450, quantity=100),
         Product("Bose QuietComfort Earbuds", price=250, quantity=50),
-        Product("Google Pixel 7", price=500, quantity=250)
+        Product("Google Pixel 7", price=500, quantity=250),
+        LimitedProduct("Special Edition iPad", price=999, quantity=30, shipping_restriction="No international shipping")
     ]
 
     best_buy = Store(product_list)
@@ -77,10 +84,9 @@ def main():
 
         action = actions.get(choice)
         if action:
-           action(best_buy)
+            action(best_buy)
         else:
-           print("Invalid choice. Please select a valid option (1-4).")
-
+            print("Invalid choice. Please select a valid option (1-4).")
 
 if __name__ == "__main__":
     main()
