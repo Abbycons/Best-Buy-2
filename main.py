@@ -1,18 +1,7 @@
-from products import Product
+from products import Product, LimitedProduct
 from store import Store
 from promotions import PercentageDisscount, SecondhalfPrice, BuyTwoGetOneFree
 
-# Step 1: Define the LimitedProduct Class
-class LimitedProduct(Product):
-    def __init__(self, name, price, quantity, shipping_restriction):
-        # Inherit from the Product class
-        super().__init__(name, price, quantity)
-        self.shipping_restriction = shipping_restriction
-
-    def show(self):
-        # Show product details including the shipping restriction
-        product_details = super().show()
-        return f"{product_details} | Shipping: {self.shipping_restriction}"
 
 def list_products(store):
     """List all products in the store."""
@@ -59,7 +48,7 @@ def main():
         Product("MacBook Air M2", price=1450, quantity=100),
         Product("Bose QuietComfort Earbuds", price=250, quantity=50),
         Product("Google Pixel 7", price=500, quantity=250),
-        LimitedProduct("Special Edition iPad", price=999, quantity=30, shipping_restriction="No international shipping")
+        LimitedProduct("Special Edition iPad", price=999, quantity=30, maximum=2)
     ]
 
     best_buy = Store(product_list)
@@ -81,7 +70,6 @@ def main():
         if choice == "4":
             print("Thank you for shopping with us. Goodbye!")
             break
-
         action = actions.get(choice)
         if action:
             action(best_buy)
